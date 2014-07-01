@@ -16,7 +16,10 @@
 #include <stdexcept> // invalid_argument
 #include <string>    // string
 #include <vector>    // vector
+#include <algorithm> // reverse
 
+
+using namespace std;
 // -----------------
 // shift_left_digits
 // -----------------
@@ -132,6 +135,9 @@ template <typename II1, typename II2, typename OI>
 OI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     // <your code>
     return x;}
+
+
+
 
 // -------
 // Integer
@@ -316,6 +322,7 @@ class Integer {
 
         C _x; // the backing container
         // <your data>
+        bool _positive;
 
     private:
         // -----
@@ -336,7 +343,30 @@ class Integer {
          */
         Integer (int value) {
             // <your code>
-            assert(valid());}
+            if(value == 0){
+                _positive = true;
+                _x.push_back(0);
+            }
+            else{
+                if(value > 0)
+                    _positive = true;
+                else{
+                    _positive = false;
+                    value = -1 * value;
+                }
+
+                while(value > 0){
+                    _x.push_back(value%10);
+                    cout << value%10 << " ";
+                    value = value / 10;
+                }
+                cout << endl;
+
+                std::reverse(_x.begin(), _x.end());
+            }
+
+            assert(valid());
+        }
 
         /**
          * <your documentation>
@@ -490,6 +520,9 @@ class Integer {
          */
         Integer& abs () {
             // <your code>
+            if(!this->_positive){
+                this->_positive = true;
+            }
             return *this;}
 
         // ---
