@@ -150,6 +150,14 @@ TEST(Integer, constructor_3) {
     catch (std::invalid_argument& e) {
         ASSERT_TRUE(false);}}
 
+TEST(Integer, constructor_4) {
+    try {
+        const Integer<int> x(250);
+    }catch (std::invalid_argument& e){
+        ASSERT_TRUE(false);}}
+    }
+}
+
 // ---
 // abs
 // ---
