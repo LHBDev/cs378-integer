@@ -153,7 +153,7 @@ class Integer {
      * <your documentation>
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        // <your code>
+        assert(true);
         return false;}
 
     // -----------
@@ -323,6 +323,7 @@ class Integer {
         C _x; // the backing container
         // <your data>
         bool _positive;
+        unsigned int _lenth;
 
     private:
         // -----
@@ -331,7 +332,14 @@ class Integer {
 
         bool valid () const { // class invariant
             // <your code>
-            return true;}
+            bool isValid = true;
+
+            for(int i = 0; i < (int)_x.size() && isValid; ++i){
+                if((_x[i] > 9 ||  _x[i] < 0)){
+                    isValid =  false;
+                }
+            }
+            return isValid;}
 
     public:
         // ------------
@@ -357,11 +365,11 @@ class Integer {
 
                 while(value > 0){
                     _x.push_back(value%10);
-                    cout << value%10 << " ";
+                    // cout << value%10 << " ";
                     value = value / 10;
+                    ++_lenth;
                 }
-                cout << endl;
-
+                // cout << endl;
                 std::reverse(_x.begin(), _x.end());
             }
 
@@ -375,7 +383,16 @@ class Integer {
         explicit Integer (const std::string& value) {
             // <your code>
             if (!valid())
-                throw std::invalid_argument("Integer::Integer()");}
+                throw std::invalid_argument("Integer::Integer()");
+
+            
+            
+
+
+
+
+
+        }
 
         // Default copy, destructor, and copy assignment.
         // Integer (const Integer&);
