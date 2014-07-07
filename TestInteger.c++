@@ -63,6 +63,18 @@ TEST(Integer, shift_left_digits) {
     ASSERT_EQ(5, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, b));}
 
+TEST(Integer, shift_left_digits_2) {
+    int a[3];
+    int x[10];
+    const int *p = shift_left_digits(a, a + 1, 2, x);
+    ASSERT_EQ(a, p);
+    ASSERT_TRUE((int)a.size() == 0);
+}
+
+TEST(Integer, shift_left_digits_3){
+    // const int a[] = 
+}
+
 // ------------------
 // shift_right_digits
 // ------------------
@@ -154,8 +166,7 @@ TEST(Integer, constructor_4) {
     try {
         const Integer<int> x(250);
     }catch (std::invalid_argument& e){
-        ASSERT_TRUE(false);}}
-    }
+        ASSERT_TRUE(false);}
 }
 
 // ---
