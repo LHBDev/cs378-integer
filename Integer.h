@@ -289,11 +289,9 @@ class Integer {
      * <your documentation>
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-        // <your code>
-        if(!rhs._positive){
+        if(!rhs._positive)
             lhs << "-";
-        }
-
+        
         for(auto it = (rhs._x).begin(); it != (rhs._x).end(); ++it){
             lhs << *it;
         }
