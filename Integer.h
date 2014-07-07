@@ -153,7 +153,7 @@ class Integer {
      * <your documentation>
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        assert(true);
+        
         return false;}
 
     // -----------
@@ -381,17 +381,20 @@ class Integer {
          * @throws invalid_argument if value is not a valid representation of an Integer
          */
         explicit Integer (const std::string& value) {
-            // <your code>
+            
             if (!valid())
                 throw std::invalid_argument("Integer::Integer()");
 
-            
-            
+            string::const_iterator number = value.cbegin();
+            string::const_iterator endNumber = value.cend();
 
+            while(number != endNumber){ 
+                if(!(*number >= '0' && *number <= '9'))
+                    throw std::invalid_argument("Integer()");
+                ++number;
+            }
 
-
-
-
+            Integer(atoi(value.c_str()));
         }
 
         // Default copy, destructor, and copy assignment.
