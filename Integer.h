@@ -290,7 +290,14 @@ class Integer {
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
         // <your code>
-        return lhs << "0";}
+        if(!rhs._positive){
+            lhs << "-";
+        }
+
+        for(auto it = (rhs._x).begin(); it != (rhs._x).end(); ++it){
+            lhs << *it;
+        }
+        return lhs;}
 
     // ---
     // abs
@@ -365,14 +372,11 @@ class Integer {
 
                 while(value > 0){
                     _x.push_back(value%10);
-                    // cout << value%10 << " ";
                     value = value / 10;
                     ++_lenth;
                 }
-                // cout << endl;
                 std::reverse(_x.begin(), _x.end());
             }
-
             assert(valid());
         }
 
@@ -539,7 +543,6 @@ class Integer {
          * <your documentation>
          */
         Integer& abs () {
-            // <your code>
             if(!this->_positive){
                 this->_positive = true;
             }
