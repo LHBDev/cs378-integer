@@ -97,7 +97,7 @@ TEST(Integer, shift_right_digits_2){
           int x[10];
     const int* p = shift_right_digits(a, a +3, 0, x);
     ASSERT_EQ(1, p - a);
-    ASSERT_TRUE(std::equal(const_cast<const int*>(x), x + 3, b));
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), const_cast<const int*>(x + 3), b));
 }
 
 TEST(Integer, shift_right_digits_3){

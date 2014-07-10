@@ -153,8 +153,17 @@ class Integer {
      * <your documentation>
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        
-        return false;}
+        if(lhs._positive != rhs._positive || lhs._x.size() != rhs._x.size())
+            return false;
+
+        auto lit = lhs._x.begin();
+        auto rit = rhs._x.begin();
+
+        while(lit != lhs._x.end()){
+            if(*lit++ != *rit++)
+                return false;
+        }
+        return true;}
 
     // -----------
     // operator !=
@@ -174,7 +183,56 @@ class Integer {
      * <your documentation>
      */
     friend bool operator < (const Integer& lhs, const Integer& rhs) {
-        // <your code>
+        
+        if(rhs._positive && !lhs._positive)
+            return true;
+        
+        else if(!rhs._positive && lhs._positive)
+            return false;
+
+        else if(rhs._positive){
+            if(rhs._x.size() > lhs._x.size())
+                return true;
+
+            else if(rhs._x.size() < lhs._x.size())
+                return false;
+
+            else{    
+                auto lit = lhs._x.begin();
+                auto rit = rhs._x.begin();
+
+                while(lit != lhs._x.end()){
+                    if(*lit < *rit)
+                        return true;
+                    else if(*lit > *rit)
+                        return false;
+                    ++lit;
+                    ++rit;
+                }   
+            }
+        }else{
+            // Comparing negattive numbers...
+            if(rhs._x.size() < lhs._x.size())
+                return true;
+            else if (rhs._x.size() > lhs._x.size())
+                return false;
+            else{
+
+                auto lit = lhs._x.begin();
+                auto rit = rhs._x.begin();
+
+                while(lit != lhs._x.end()){
+                    if(*lit > *rit)
+                        return true;
+                    else if(*lit < *rit)
+                        return false;
+                    ++lit;
+                    ++rit;
+                } 
+            }
+
+        }
+
         return false;}
 
     // -----------
