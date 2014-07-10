@@ -471,7 +471,9 @@ class Integer {
          */
         Integer operator - () const {
             // <your code>
-            return Integer(0);}
+            Integer x = *this;
+            x._positive = !x._positive;
+            return x;}
 
         // -----------
         // operator ++
@@ -520,6 +522,101 @@ class Integer {
          */
         Integer& operator += (const Integer& rhs) {
             // <your code>
+            Integer lhs = *this;
+            Integer crhs = rhs;
+            Integer& bigger = *this;
+            Integer& smaller = crhs;
+            
+
+            if(lhs._x.size() < crhs._x.size()){
+                bigger = crhs;
+                smaller = lhs;
+            }
+
+            unsigned int diff = bigger._x.size() - smaller._x.size();
+            cout<<"DIFF: " << diff<<endl;
+
+            reverse(smaller._x.begin(), smaller._x.end());
+            for(;diff > 0; --diff)
+                smaller._x.push_back(0);
+            reverse(smaller._x.begin(), smaller._x.end());
+            
+            if(crhs._positive == !lhs._positive){
+                
+                if(crhs._positive){
+                    Integer& pos = crhs;
+                    Integer& neg = *this;
+                    (*this)._positive = true;
+                    if(!((*this) <= crhs))
+                        (*this)._positive = false;
+                    pos = crhs;
+                    neg = *this;
+                    auto posit = pos._x.end();
+                    auto negit = neg._x.end();
+                    --posit;
+                    --negit;
+
+                    while(posit >= pos._x.begin() && negit >= neg._x.begin()){
+                        cout << "N: " << *negit << " P: " << *posit <<endl;
+                        *negit -= *posit;
+                        cout << "N: " << *negit << " P: " << *posit <<endl;
+
+                        if(*negit < 0)
+                            *negit *= -1;
+                        --negit;
+                        --posit;
+                    }
+                }
+                else{
+                    
+                    Integer& pos = *this;
+                    Integer neg = crhs;
+                    (*this)._positive = false;
+                    if((*this) < crhs)
+                        (*this)._positive = true;
+                    auto posit = pos._x.end();
+                    auto negit = neg._x.end();
+                    --posit;
+                    --negit;
+
+                    while(posit >= pos._x.begin() && negit >= neg._x.begin()){
+                        cout << "N: " << *negit << " P: " << *posit <<endl;
+                        *posit -= *negit;
+                        cout << "N: " << *negit << " P: " << *posit <<endl;
+
+                        if(*posit < 0)
+                            *posit *= -1;
+                        --negit;
+                        --posit;
+                    }
+
+                }
+            }
+            else if(crhs._positive == lhs._positive){
+                cout<<"HEHREHHREKNLGHSAHFGHL:GH"<<endl;
+                auto thisit = (*this)._x.end();
+                auto rit = crhs._x.end();
+                --thisit;
+                --rit;
+
+                bool carry = false;
+                while(thisit >= (*this)._x.begin()){
+                    int i = 0;
+                    if(carry){
+                        carry = false;
+                        i = 1;
+                    }
+                    *thisit += *rit + i;
+                    if(*thisit > 9){
+                        *thisit = *thisit % 10;
+                        carry = true;
+                    }
+                    --thisit;
+                    --rit;
+                }
+
+
+            }
             return *this;}
 
         // -----------
