@@ -112,14 +112,41 @@ To obtain coverage of the test:
 // // plus_digits
 // // -----------
 
-// TEST(Integer, plus_digits) {
-//     const int a[] = {2, 3, 4};
-//     const int b[] = {5, 6, 7};
-//     const int c[] = {8, 0, 1};
-//           int x[10];
-//     const int* p = plus_digits(a, a + 3, b, b + 3, x);
-//     ASSERT_EQ(3, p - x);
-//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+TEST(Integer, plus_digits) {
+    const int a[] = {2, 3, 4};
+    const int b[] = {5, 6, 7};
+    const int c[] = {8, 0, 1};
+          int x[10];
+    const int* p = plus_digits(a, a + 3, b, b + 3, x);
+    ASSERT_EQ(3, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, plus_digits1) {
+    const int a[] = {9, 9, 5};
+    const int b[] = {9, 9, 5};
+    const int c[] = {1, 9, 9, 0};
+          int x[10];
+    const int* p = plus_digits(a, a + 3, b, b + 3, x);
+    ASSERT_EQ(4, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, plus_digits2) {
+    const int a[] = {5};
+    const int b[] = {9, 9, 5};
+    const int c[] = {1, 0, 0, 0};
+          int x[10];
+    const int* p = plus_digits(a, a + 1, b, b + 3, x);
+    ASSERT_EQ(4, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, plus_digits3) {
+    const int a[] = {5};
+    const int b[] = {9, 9, 5};
+    const int c[] = {1, 0, 0, 0};
+          int x[10];
+    const int* p = plus_digits(b, b + 3, a, a + 1, x);
+    ASSERT_EQ(4, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 // // ------------
 // // minus_digits
@@ -277,95 +304,95 @@ TEST(Integer, constructor_4) {
 //     catch (std::invalid_argument& e) {
 //         ASSERT_TRUE(false);}}
 
-TEST(Integer, plus_equals){
-    Integer<int> a =(-25);
-    Integer<int> b = (1325);
-    a += b;
-    cout<<a<<endl<<endl;
-    ASSERT_TRUE(a == 1300);
-}
+// TEST(Integer, plus_equals){
+//     Integer<int> a =(-25);
+//     Integer<int> b = (1325);
+//     a += b;
+//     cout<<a<<endl<<endl;
+//     ASSERT_TRUE(a == 1300);
+// }
 
-TEST(Integer, plus_equals2){
-    Integer<int> a =(13);
-    Integer<int> b = (-25);
-    a += b;
-    ASSERT_TRUE(a == -12);
-}
+// TEST(Integer, plus_equals2){
+//     Integer<int> a =(13);
+//     Integer<int> b = (-25);
+//     a += b;
+//     ASSERT_TRUE(a == -12);
+// }
 
-TEST(Integer, plus_equals3){
-    Integer<int> a =(-13);
-    Integer<int> b = (25);
-    a += b;
-    ASSERT_TRUE(a == 12);
-}
+// TEST(Integer, plus_equals3){
+//     Integer<int> a =(-13);
+//     Integer<int> b = (25);
+//     a += b;
+//     ASSERT_TRUE(a == 12);
+// }
 
-TEST(Integer, plus_equals4){
-    Integer<int> a =(13);
-    Integer<int> b = (13);
-    a += b;
-    ASSERT_TRUE(a == 26);
-}
+// TEST(Integer, plus_equals4){
+//     Integer<int> a =(13);
+//     Integer<int> b = (13);
+//     a += b;
+//     ASSERT_TRUE(a == 26);
+// }
 
-TEST(Integer, plus_equals5){
-    Integer<int> a =(-13);
-    Integer<int> b = (-25);
-    a += b;
-    ASSERT_TRUE(a == -38);
-}
+// TEST(Integer, plus_equals5){
+//     Integer<int> a =(-13);
+//     Integer<int> b = (-25);
+//     a += b;
+//     ASSERT_TRUE(a == -38);
+// }
 
-TEST(Integer, plus_equals6){
-    Integer<int> a =(0);
-    Integer<int> b = (0);
-    a += b;
-    ASSERT_TRUE(a == 0);
-}
+// TEST(Integer, plus_equals6){
+//     Integer<int> a =(0);
+//     Integer<int> b = (0);
+//     a += b;
+//     ASSERT_TRUE(a == 0);
+// }
 
-TEST(Integer, plus_equals7){
-    Integer<int> a =(0);
-    Integer<int> b = (1);
-    a += b;
-    ASSERT_TRUE(a == 1);
-}
+// TEST(Integer, plus_equals7){
+//     Integer<int> a =(0);
+//     Integer<int> b = (1);
+//     a += b;
+//     ASSERT_TRUE(a == 1);
+// }
 
-TEST(Integer, plus_equals8){
-    Integer<int> a =(-1);
-    Integer<int> b = (1);
-    a += b;
-    cout<<a<<endl;
-    ASSERT_TRUE(a == 0);
-}
+// TEST(Integer, plus_equals8){
+//     Integer<int> a =(-1);
+//     Integer<int> b = (1);
+//     a += b;
+//     cout<<a<<endl;
+//     ASSERT_TRUE(a == 0);
+// }
 
-TEST(Integer, plus_equals9){
-    Integer<int> a =(-1300);
-    Integer<int> b = (25);
-    a += b;
-    ASSERT_TRUE(a == -1325);
-}
+// TEST(Integer, plus_equals9){
+//     Integer<int> a =(-1300);
+//     Integer<int> b = (25);
+//     a += b;
+//     ASSERT_TRUE(a == -1325);
+// }
 
-// -------------------
-// less than operator 
-// -------------------
+// // -------------------
+// // less than operator 
+// // -------------------
 
-TEST(Integer, less_than){
-    Integer<int> a = (-25);
-    Integer<int> b = 1325;
-    ASSERT_TRUE(a < b);
-}
+// TEST(Integer, less_than){
+//     Integer<int> a = (-25);
+//     Integer<int> b = 1325;
+//     ASSERT_TRUE(a < b);
+// }
 
-TEST(Integer, less_than2){
-    Integer<int> a = (25);
-    Integer<int> b = 1325;
-    ASSERT_TRUE(a < b);
-}
+// TEST(Integer, less_than2){
+//     Integer<int> a = (25);
+//     Integer<int> b = 1325;
+//     ASSERT_TRUE(a < b);
+// }
 
-TEST(Integer, less_than3){
-    Integer<int> a = (25);
-    Integer<int> b = 25;
-    ASSERT_TRUE(! (a < b));
-}
+// TEST(Integer, less_than3){
+//     Integer<int> a = (25);
+//     Integer<int> b = 25;
+//     ASSERT_TRUE(! (a < b));
+// }
 
-TEST(Integer, less_than4){
-    Integer<int> a = (0);
-    Integer<int> b = 0;
-    ASSERT_TRUE(!(a < b));
-}
+// TEST(Integer, less_than4){
+//     Integer<int> a = (0);
+//     Integer<int> b = 0;
+//     ASSERT_TRUE(!(a < b));
+// }
