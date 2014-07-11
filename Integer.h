@@ -357,13 +357,17 @@ class Integer {
 
                 while(value > 0){
                     _x.push_back(value%10);
-                    cout << value%10 << " ";
                     value = value / 10;
                 }
-                cout << endl;
+
 
                 std::reverse(_x.begin(), _x.end());
             }
+            if(!_positive)
+                cout<<"-";
+            for(auto it : _x)
+                    cout << it;
+            cout<<endl;
 
             assert(valid());
         }

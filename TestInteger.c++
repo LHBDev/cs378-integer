@@ -154,7 +154,22 @@ TEST(Integer, constructor_4) {
     try {
         const Integer<int> x(250);
     }catch (std::invalid_argument& e){
-        ASSERT_TRUE(false);}}
+        ASSERT_TRUE(false);}
+}
+
+TEST(Integer, constructor_5) {
+    try {
+        const Integer<int> x(-250);
+    }catch (std::invalid_argument& e){
+        ASSERT_TRUE(false);
+    }
+}
+
+TEST(Integer, constructor_6) {
+    try {
+        const Integer<int> x(0);
+    }catch (std::invalid_argument& e){
+        ASSERT_TRUE(false);
     }
 }
 
