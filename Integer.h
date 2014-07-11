@@ -35,8 +35,13 @@ using namespace std;
  */
 template <typename II, typename OI>
 OI shift_left_digits (II b, II e, int n, OI x) {
-    // <your code>
-    return x;}
+
+    x = copy(b, e, x);
+    OI y = x;
+    advance(y, n);
+    fill(x, y, typename iterator_traits<II>::value_type());
+    return y;
+}
 
 // ------------------
 // shift_right_digits
@@ -53,7 +58,14 @@ OI shift_left_digits (II b, II e, int n, OI x) {
  */
 template <typename II, typename OI>
 OI shift_right_digits (II b, II e, int n, OI x) {
-    // <your code>
+    unsigned int  dist = distance(b, e);
+
+    if(n >= dist){
+        *x++ = 0;
+        return x;
+    }
+
+    x =copy(b, e-n, x);
     return x;}
 
 // -----------
@@ -73,13 +85,7 @@ OI shift_right_digits (II b, II e, int n, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
-    unsigned int distance1 = distance(b1, e1);
-    unsigned int distance2 = distance(b2, e2);
-
     OI y = x;
-
-    unsigned int minDist = min(distance1, distance2);
 
     --e1;
     --e2;
@@ -143,7 +149,57 @@ OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+    OI y = x;
+
+    --e1;
+    --e2;
+    bool carry = false;
+    while(e1 >= b1 && e2 >= b2){
+        int sum = 0;
+        if(carry && *e1 != 0){
+            carry = false;
+            sum -= 1;
+        }
+        else if(carry && *e1 == 0)
+            sum += 9;
+        if(*e1 + sum < *e2){
+            carry = true;
+            sum += 10;
+        }
+        // cout<<sum<<endl;
+        // cout<<*e1<<" "<<*e2<<endl;
+        sum += *e1-- - *e2--;
+        // cout<<sum<<endl;
+        *x++ = sum;
+    }
+
+    while(e1 >= b1)
+    {
+        int sum = 0;
+        if(carry && *e1 != 0){
+            carry = false;
+            sum -= 1;
+        }
+        else if(carry && *e1 == 0){
+            sum += 9;
+        }
+        *x++ = sum + *e1--;
+    }
+
+    while(e2 >= b2)
+    {
+        int sum = 0;
+        if(carry && *e2 != 0){
+            carry = false;
+            sum -=1;
+        }
+        else{
+            sum +=9;
+        }
+        *x++ = sum + *e2--;
+    }
+
+    reverse(y,x);
     return x;}
 
 // -----------------
