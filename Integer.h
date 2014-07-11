@@ -17,6 +17,7 @@
 #include <string>    // string
 #include <vector>    // vector
 #include <algorithm> // reverse
+#include <deque>
 
 
 using namespace std;
@@ -35,8 +36,13 @@ using namespace std;
  */
 template <typename II, typename OI>
 OI shift_left_digits (II b, II e, int n, OI x) {
-    // <your code>
-    return x;}
+
+    x = copy(b, e, x);
+    OI y = x;
+    advance(y, n);
+    fill(x, y, typename iterator_traits<II>::value_type());
+    return y;
+}
 
 // ------------------
 // shift_right_digits
@@ -53,7 +59,14 @@ OI shift_left_digits (II b, II e, int n, OI x) {
  */
 template <typename II, typename OI>
 OI shift_right_digits (II b, II e, int n, OI x) {
-    // <your code>
+    unsigned int  dist = distance(b, e);
+
+    if(n >= dist){
+        *x++ = 0;
+        return x;
+    }
+
+    x =copy(b, e-n, x);
     return x;}
 
 // -----------
@@ -73,7 +86,51 @@ OI shift_right_digits (II b, II e, int n, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+    OI y = x;
+
+    --e1;
+    --e2;
+    bool carry = false;
+    while(e1 >= b1 && e2 >= b2){
+        int sum = 0;
+        if(carry){
+            carry = false;
+            sum += 1;}
+
+        sum += *e1-- + *e2--;
+        if(sum > 9){
+            sum = sum %10;
+            carry = true;}
+        *x++ = sum;}
+
+    while(e1 >= b1){
+        int sum = 0;
+
+        if(carry){
+            carry = false;
+            sum += 1;}
+
+        sum += *e1--;
+         if(sum > 9){
+            sum = sum %10;
+            carry = true;}
+        *x++ = sum;}
+
+    while(e2 >= b2){
+        int sum = 0;
+        if(carry){
+            carry = false;
+            sum += 1;}
+
+        sum += *e2--;
+         if(sum > 9){
+            sum = sum %10;
+            carry = true;}
+        *x++ = sum;}
+
+    if(carry)
+        *x++ = 1;
+    reverse(y, x);
     return x;}
 
 // ------------
@@ -93,7 +150,57 @@ OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  */
 template <typename II1, typename II2, typename OI>
 OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+    OI y = x;
+
+    --e1;
+    --e2;
+    bool carry = false;
+    while(e1 >= b1 && e2 >= b2){
+        int sum = 0;
+        if(carry && *e1 != 0){
+            carry = false;
+            sum -= 1;
+        }
+        else if(carry && *e1 == 0)
+            sum += 9;
+        if(*e1 + sum < *e2){
+            carry = true;
+            sum += 10;
+        }
+        // cout<<sum<<endl;
+        // cout<<*e1<<" "<<*e2<<endl;
+        sum += *e1-- - *e2--;
+        // cout<<sum<<endl;
+        *x++ = sum;
+    }
+
+    while(e1 >= b1)
+    {
+        int sum = 0;
+        if(carry && *e1 != 0){
+            carry = false;
+            sum -= 1;
+        }
+        else if(carry && *e1 == 0){
+            sum += 9;
+        }
+        *x++ = sum + *e1--;
+    }
+
+    while(e2 >= b2)
+    {
+        int sum = 0;
+        if(carry && *e2 != 0){
+            carry = false;
+            sum -=1;
+        }
+        else{
+            sum +=9;
+        }
+        *x++ = sum + *e2--;
+    }
+
+    reverse(y,x);
     return x;}
 
 // -----------------
@@ -111,11 +218,87 @@ OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
  * output the product of the two input sequences into the output sequence
  * ([b1, e1) * [b2, e2)) => x
  */
+ void printVector(const vector<int>& v);
+
 template <typename II1, typename II2, typename OI>
 OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+   
+    vector<vector<int> >  cache;
+
+    vector<int> zero;
+    zero.push_back(0);
+    cache.push_back(zero);
+
+    for(int i = 1; i  < 10; ++i){
+        II1 temp = b1;
+        vector<int> tempInt;
+
+        int carry = 0;
+        while(temp != e1){
+            int number = 0;
+            if(carry > 0){
+                number += carry;
+                carry = 0;
+            }
+            number += i * *temp;
+
+            tempInt.push_back(number%10);
+            if(number > 10){
+                carry = number/10;
+            }
+            ++temp;
+        }
+        while(carry > 0){
+            if(carry < 10){
+                tempInt.push_back(carry);
+                carry = 0;}
+            else{
+                tempInt.push_back(carry%10);
+                carry /= 10;
+            }
+        }
+        cache.push_back(tempInt);
+        // printVector(tempInt);
+        // vectors in reverse order
+    }
+
+    // cout << "Finihed Cache" << endl;
+    vector<vector<int> > toAdd;
+
+
+    int shift = 0;
+    int biggest = -1;
+    while(b2 != e2){
+        // cout << "...." << endl;
+        vector<int> temp = cache[*b2];
+        // printVector(temp);
+        vector<int> number(temp.size() + shift,0);
+        // reverse(temp.begin(), temp.end());
+        shift_left_digits(temp.begin(), temp.end(), shift++, number.begin());
+        // cout<<"num"<<endl;
+        // printVector(number);
+        toAdd.push_back(number);
+        if(toAdd.size() > biggest)
+            biggest = toAdd.size();
+        b2++;
+    }
+
+
+    deque<int> added;
+    for(int i = 0; i < (int) toAdd.size() - 1; ++i){
+        x = plus_digits(toAdd[i].begin(), toAdd[i].end(), toAdd[i+1].begin(), toAdd[i+1].end(), x);
+    }
+
+
     return x;}
 
+
+void printVector(const vector<int>& v){
+    for(int i = 0; i < (int)v.size(); ++i){
+        cout << v[i] << " ";
+    }
+    cout << endl;
+}
 // --------------
 // divides_digits
 // --------------
@@ -153,8 +336,17 @@ class Integer {
      * <your documentation>
      */
     friend bool operator == (const Integer& lhs, const Integer& rhs) {
-        // <your code>
-        return false;}
+        if(lhs._positive != rhs._positive || lhs._x.size() != rhs._x.size())
+            return false;
+
+        auto lit = lhs._x.begin();
+        auto rit = rhs._x.begin();
+
+        while(lit != lhs._x.end()){
+            if(*lit++ != *rit++)
+                return false;
+        }
+        return true;}
 
     // -----------
     // operator !=
@@ -174,7 +366,56 @@ class Integer {
      * <your documentation>
      */
     friend bool operator < (const Integer& lhs, const Integer& rhs) {
-        // <your code>
+        
+        if(rhs._positive && !lhs._positive)
+            return true;
+        
+        else if(!rhs._positive && lhs._positive)
+            return false;
+
+        else if(rhs._positive){
+            if(rhs._x.size() > lhs._x.size())
+                return true;
+
+            else if(rhs._x.size() < lhs._x.size())
+                return false;
+
+            else{    
+                auto lit = lhs._x.begin();
+                auto rit = rhs._x.begin();
+
+                while(lit != lhs._x.end()){
+                    if(*lit < *rit)
+                        return true;
+                    else if(*lit > *rit)
+                        return false;
+                    ++lit;
+                    ++rit;
+                }   
+            }
+        }else{
+            // Comparing negattive numbers...
+            if(rhs._x.size() < lhs._x.size())
+                return true;
+            else if (rhs._x.size() > lhs._x.size())
+                return false;
+            else{
+
+                auto lit = lhs._x.begin();
+                auto rit = rhs._x.begin();
+
+                while(lit != lhs._x.end()){
+                    if(*lit > *rit)
+                        return true;
+                    else if(*lit < *rit)
+                        return false;
+                    ++lit;
+                    ++rit;
+                } 
+            }
+
+        }
+
         return false;}
 
     // -----------
@@ -289,8 +530,13 @@ class Integer {
      * <your documentation>
      */
     friend std::ostream& operator << (std::ostream& lhs, const Integer& rhs) {
-        // <your code>
-        return lhs << "0";}
+        if(!rhs._positive)
+            lhs << "-";
+        
+        for(auto it = (rhs._x).begin(); it != (rhs._x).end(); ++it){
+            lhs << *it;
+        }
+        return lhs;}
 
     // ---
     // abs
@@ -323,6 +569,7 @@ class Integer {
         C _x; // the backing container
         // <your data>
         bool _positive;
+        unsigned int _lenth;
 
     private:
         // -----
@@ -331,7 +578,14 @@ class Integer {
 
         bool valid () const { // class invariant
             // <your code>
-            return true;}
+            bool isValid = true;
+
+            for(int i = 0; i < (int)_x.size() && isValid; ++i){
+                if((_x[i] > 9 ||  _x[i] < 0)){
+                    isValid =  false;
+                }
+            }
+            return isValid;}
 
     public:
         // ------------
@@ -358,9 +612,8 @@ class Integer {
                 while(value > 0){
                     _x.push_back(value%10);
                     value = value / 10;
+                    ++_lenth;
                 }
-
-
                 std::reverse(_x.begin(), _x.end());
             }
             if(!_positive)
@@ -368,7 +621,6 @@ class Integer {
             for(auto it : _x)
                     cout << it;
             cout<<endl;
-
             assert(valid());
         }
 
@@ -377,9 +629,21 @@ class Integer {
          * @throws invalid_argument if value is not a valid representation of an Integer
          */
         explicit Integer (const std::string& value) {
-            // <your code>
+            
             if (!valid())
-                throw std::invalid_argument("Integer::Integer()");}
+                throw std::invalid_argument("Integer::Integer()");
+
+            string::const_iterator number = value.cbegin();
+            string::const_iterator endNumber = value.cend();
+
+            while(number != endNumber){ 
+                if(!(*number >= '0' && *number <= '9'))
+                    throw std::invalid_argument("Integer()");
+                ++number;
+            }
+
+            Integer(atoi(value.c_str()));
+        }
 
         // Default copy, destructor, and copy assignment.
         // Integer (const Integer&);
@@ -395,7 +659,9 @@ class Integer {
          */
         Integer operator - () const {
             // <your code>
-            return Integer(0);}
+            Integer x = *this;
+            x._positive = !x._positive;
+            return x;}
 
         // -----------
         // operator ++
@@ -444,6 +710,7 @@ class Integer {
          */
         Integer& operator += (const Integer& rhs) {
             // <your code>
+
             return *this;}
 
         // -----------
@@ -523,7 +790,6 @@ class Integer {
          * <your documentation>
          */
         Integer& abs () {
-            // <your code>
             if(!this->_positive){
                 this->_positive = true;
             }
