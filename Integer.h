@@ -223,7 +223,7 @@ OI minus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
 
 template <typename II1, typename II2, typename OI>
 OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-   
+    OI y = x;
     vector<vector<int> >  cache;
     vector<int> original;
     
@@ -284,24 +284,24 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
         vector<int> tempMulti = cache[*e2--];
         vector<int> multi(tempMulti.size() + shifts,0);
         vector<int> tempProd(distance);
-        printVector(tempMulti);
+        // printVector(tempMulti);
         OI y = shift_left_digits(tempMulti.begin(), tempMulti.end(),
             shifts++, &multi[0]);
-        printVector(multi);
-        printVector(runningProduct);
+        // printVector(multi);
+        // printVector(runningProduct);
         int *p = multi.data();
         int *q = runningProduct.data();
         OI z = plus_digits(p, p + multi.size(),q,
             q + runningProduct.size(), &tempProd[0]);
         runningProduct = tempProd;
-        printVector(runningProduct);
+        // printVector(runningProduct);
     }
-    cout<<"Size: "<< runningProduct.size()<<endl;
-    OI y = x;
-    for(int i = runningProduct.size() -1; i<=0; --i)
+    // cout<<"Size: "<< runningProduct.size()<<endl;
+    // OI y = x;
+    for(int i = 0; i< runningProduct.size(); ++i)
         *y++ = runningProduct[i];
 
-
+    // reverse(x, y);
     return y;}
 
 
@@ -628,11 +628,11 @@ class Integer {
                 }
                 std::reverse(_x.begin(), _x.end());
             }
-            if(!_positive)
-                cout<<"-";
-            for(auto it : _x)
-                    cout << it;
-            cout<<endl;
+            // if(!_positive)
+            //     cout<<"-";
+            // for(auto it : _x)
+            //         cout << it;
+            // cout<<endl;
             assert(valid());
         }
 
