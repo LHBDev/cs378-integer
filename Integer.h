@@ -126,7 +126,8 @@ OI plus_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
          if(sum > 9){
             sum = sum %10;
             carry = true;}
-        *x++ = sum;}
+        *x++ = sum;
+    }
 
     if(carry)
         *x++ = 1;
@@ -273,8 +274,6 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     unsigned long distance = distance1 + distance2;
 
     vector<int> runningProduct(distance, 0);
-    for(int i = 0; i < (int) runningProduct.size(); ++i)
-        cout << runningProduct[i] << endl;
 
     int shifts = 0;
     --e2;
@@ -284,17 +283,26 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
         // cout<<shifts<<endl;
         vector<int> tempMulti = cache[*e2--];
         vector<int> multi(tempMulti.size() + shifts,0);
+        vector<int> tempProd(distance);
         printVector(tempMulti);
         OI y = shift_left_digits(tempMulti.begin(), tempMulti.end(),
             shifts++, &multi[0]);
         printVector(multi);
-        OI z = plus_digits(runningProduct.begin(), runningProduct.end(),
-            multi.begin(), multi.end(), &runningProduct[0]);
+        printVector(runningProduct);
+        int *p = multi.data();
+        int *q = runningProduct.data();
+        OI z = plus_digits(p, p + multi.size(),q,
+            q + runningProduct.size(), &tempProd[0]);
+        runningProduct = tempProd;
         printVector(runningProduct);
     }
+    cout<<"Size: "<< runningProduct.size()<<endl;
+    OI y = x;
+    for(int i = runningProduct.size() -1; i<=0; --i)
+        *y++ = runningProduct[i];
 
 
-    return x;}
+    return y;}
 
 
 void printVector(const vector<int>& v){

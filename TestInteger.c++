@@ -221,9 +221,6 @@ TEST(Integer, multiplies_digits) {
     const int c[] = {1, 3, 2, 6, 7, 8};
           int x[10];
     const int* p = multiplies_digits(a, a + 3, b, b + 3, x);
-     for(int i = 0; i < 6;++i)
-        cout<<x[i]<<" ";
-    cout<<endl;
     ASSERT_EQ(6, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
