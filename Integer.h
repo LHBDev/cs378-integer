@@ -224,70 +224,74 @@ template <typename II1, typename II2, typename OI>
 OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
    
     vector<vector<int> >  cache;
+    vector<int> original;
+    
+    II1 copyTemp = b1;
+    while(copyTemp != e1)
+        original.push_back(*copyTemp++);
+    reverse(original.begin(), original.end());
 
     vector<int> zero;
     zero.push_back(0);
     cache.push_back(zero);
 
-    for(int i = 1; i  < 10; ++i){
-        II1 temp = b1;
+    for(int i = 1; i < 10; ++i){
+        auto temp = original.begin();
         vector<int> tempInt;
-
         int carry = 0;
-        while(temp != e1){
-            int number = 0;
+
+        while(temp != original.end()){
+            int product = 0;
             if(carry > 0){
-                number += carry;
+                product += carry;
                 carry = 0;
             }
-            number += i * *temp;
 
-            tempInt.push_back(number%10);
-            if(number > 10){
-                carry = number/10;
+            product += *temp * i;
+            if(product > 9){
+                carry = product / 10;
+                product = product % 10;
             }
+
+            tempInt.push_back(product);
             ++temp;
         }
         while(carry > 0){
-            if(carry < 10){
-                tempInt.push_back(carry);
-                carry = 0;}
-            else{
-                tempInt.push_back(carry%10);
-                carry /= 10;
-            }
+            int leftover = carry % 10;
+            carry = carry / 10;
+            tempInt.push_back(leftover);
         }
+        reverse(tempInt.begin(), tempInt.end());
         cache.push_back(tempInt);
-        // printVector(tempInt);
-        // vectors in reverse order
+        printVector(tempInt);
     }
 
     // cout << "Finihed Cache" << endl;
-    vector<vector<int> > toAdd;
+    // vector<vector<int> > toAdd;
 
 
-    int shift = 0;
-    int biggest = -1;
-    while(b2 != e2){
-        // cout << "...." << endl;
-        vector<int> temp = cache[*b2];
-        // printVector(temp);
-        vector<int> number(temp.size() + shift,0);
-        // reverse(temp.begin(), temp.end());
-        shift_left_digits(temp.begin(), temp.end(), shift++, number.begin());
-        // cout<<"num"<<endl;
-        // printVector(number);
-        toAdd.push_back(number);
-        if(toAdd.size() > biggest)
-            biggest = toAdd.size();
-        b2++;
-    }
+    // int shift = 0;
+    // int biggest = -1;
+    // while(b2 != e2){
+    //     // cout << "...." << endl;
+    //     vector<int> temp = cache[*b2];
+    //     // printVector(temp);
+    //     vector<int> number(temp.size() + shift,0);
+    //     // reverse(temp.begin(), temp.end());
+    //     shift_left_digits(temp.begin(), temp.end(), shift++, number.begin());
+    //     // cout<<"num"<<endl;
+    //     // printVector(number);
+    //     toAdd.push_back(number);
+    //     if(toAdd.size() > biggest)
+    //         biggest = toAdd.size();
+    //     b2++;
+    // }
 
 
-    deque<int> added;
-    for(int i = 0; i < (int) toAdd.size() - 1; ++i){
-        x = plus_digits(toAdd[i].begin(), toAdd[i].end(), toAdd[i+1].begin(), toAdd[i+1].end(), x);
-    }
+    // deque<int> added;
+    // for(int i = 0; i < (int) toAdd.size() - 1; ++i){
+    //     x = plus_digits(toAdd[i].begin(), toAdd[i].end(), toAdd[i+1].begin(), toAdd[i+1].end(), x);
+    // }
 
 
     return x;}
