@@ -46,3 +46,6 @@ TestInteger.out: TestInteger
 
 test: TestInteger
 	valgrind ./TestInteger
+
+t: TestInteger
+	./TestInteger

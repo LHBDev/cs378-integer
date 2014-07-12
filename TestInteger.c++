@@ -133,6 +133,17 @@ To obtain coverage of the test:
 //     ASSERT_EQ(3, p - x);
 //     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
+TEST(Integer, plus_digits) {
+    const int a[] = {0,0,0,0,0,0};
+    const int b[] = {1,6,3,8};
+    const int c[] = {0,0,1,6,3,8};
+          int x[10];
+    const int* p = plus_digits(a, a + 6, b, b + 4, x);
+    ASSERT_EQ(6, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+
+
 // TEST(Integer, plus_digits1) {
 //     const int a[] = {9, 9, 5};
 //     const int b[] = {9, 9, 5};
@@ -216,17 +227,17 @@ TEST(Integer, multiplies_digits) {
     ASSERT_EQ(6, p - x);
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
-TEST(Integer, multiplies_digits2) {
-    const int a[] = { 4};
-    const int b[] = { 7};
-    const int c[] = {2, 8};
-          int x[10];
-    const int* p = multiplies_digits(a, a + 1, b, b + 1, x);
-    // for(int i = 0; i < 2;++i)
-    //     cout<<x[i]<<" ";
-    // cout<<endl;
-    ASSERT_EQ(2, p - x);
-    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+// TEST(Integer, multiplies_digits2) {
+//     const int a[] = { 4};
+//     const int b[] = { 7};
+//     const int c[] = {2, 8};
+//           int x[10];
+//     const int* p = multiplies_digits(a, a + 1, b, b + 1, x);
+//     // for(int i = 0; i < 2;++i)
+//     //     cout<<x[i]<<" ";
+//     // cout<<endl;
+//     ASSERT_EQ(2, p - x);
+//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 // // --------------
 // // divides_digits

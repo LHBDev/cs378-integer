@@ -263,35 +263,35 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
         }
         reverse(tempInt.begin(), tempInt.end());
         cache.push_back(tempInt);
-        printVector(tempInt);
+        // printVector(tempInt);
     }
 
-    // cout << "Finihed Cache" << endl;
-    // vector<vector<int> > toAdd;
+    // cout<<"END CACHE: "<<endl;
 
+    unsigned long distance1 = distance(b1, e1);
+    unsigned long distance2 = distance(b2, e2);
+    unsigned long distance = distance1 + distance2;
 
-    // int shift = 0;
-    // int biggest = -1;
-    // while(b2 != e2){
-    //     // cout << "...." << endl;
-    //     vector<int> temp = cache[*b2];
-    //     // printVector(temp);
-    //     vector<int> number(temp.size() + shift,0);
-    //     // reverse(temp.begin(), temp.end());
-    //     shift_left_digits(temp.begin(), temp.end(), shift++, number.begin());
-    //     // cout<<"num"<<endl;
-    //     // printVector(number);
-    //     toAdd.push_back(number);
-    //     if(toAdd.size() > biggest)
-    //         biggest = toAdd.size();
-    //     b2++;
-    // }
+    vector<int> runningProduct(distance, 0);
+    for(int i = 0; i < (int) runningProduct.size(); ++i)
+        cout << runningProduct[i] << endl;
 
+    int shifts = 0;
+    --e2;
 
-    // deque<int> added;
-    // for(int i = 0; i < (int) toAdd.size() - 1; ++i){
-    //     x = plus_digits(toAdd[i].begin(), toAdd[i].end(), toAdd[i+1].begin(), toAdd[i+1].end(), x);
-    // }
+    while(e2 >= b2){
+        // cout<<*e2<<endl;
+        // cout<<shifts<<endl;
+        vector<int> tempMulti = cache[*e2--];
+        vector<int> multi(tempMulti.size() + shifts,0);
+        printVector(tempMulti);
+        OI y = shift_left_digits(tempMulti.begin(), tempMulti.end(),
+            shifts++, &multi[0]);
+        printVector(multi);
+        OI z = plus_digits(runningProduct.begin(), runningProduct.end(),
+            multi.begin(), multi.end(), &runningProduct[0]);
+        printVector(runningProduct);
+    }
 
 
     return x;}
