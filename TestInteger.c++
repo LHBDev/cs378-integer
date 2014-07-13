@@ -235,17 +235,47 @@ TEST(Integer, multiplies_digits2) {
     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 // // --------------
-// // divides_digits
+// // compare
 // // --------------
+TEST(Integer, compare) {
+    const int a[] = { 8};
+    const int b[] = { 7};
 
-// TEST(Integer, divides_digits) {
-//     const int a[] = {1, 3, 2, 6, 7, 8};
-//     const int b[] = {5, 6, 7};
-//     const int c[] = {2, 3, 4};
-//           int x[10];
-//     const int* p = divides_digits(a, a + 6, b, b + 3, x);
-//     ASSERT_EQ(3, p - x);
-//     ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+    ASSERT_FALSE(compare(a, a+1, b, b + 1));}
+
+TEST(Integer, compare1) {
+    const int a[] = { 8};
+    const int b[] = { 8};
+
+    ASSERT_TRUE(compare(a, a+1, b, b + 1));}
+
+TEST(Integer, compare2) {
+    const int a[] = { 8, 1};
+    const int b[] = { 8, 0};
+
+    ASSERT_FALSE(compare(a, a+2, b, b + 2));}
+
+
+// --------------
+// divides_digits
+// --------------
+TEST(Integer, divides_digits) {
+    const int a[] = {2, 5, 0};
+    const int b[] = {1,2};
+    const int c[] = {0};
+          int x[10];
+    const int* p = divides_digits(a, a + 3, b, b + 2, x);
+    ASSERT_EQ(1, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
+
+TEST(Integer, divides_digits1) {
+    const int a[] = {2, 5, 0};
+    const int b[] = {1,2};
+    const int c[] = {2,3};
+          int x[10];
+    const int* p = divides_digits( b, b + 2, a, a + 3, x);
+    ASSERT_EQ(2, p - x);
+    ASSERT_TRUE(std::equal(const_cast<const int*>(x), p, c));}
 
 // -----------
 // constructor

@@ -298,7 +298,7 @@ OI multiplies_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
     }
     // cout<<"Size: "<< runningProduct.size()<<endl;
     // OI y = x;
-    for(int i = 0; i< runningProduct.size(); ++i)
+    for(int i = 0; i< (int)runningProduct.size(); ++i)
         *y++ = runningProduct[i];
 
     // reverse(x, y);
@@ -310,6 +310,20 @@ void printVector(const vector<int>& v){
         cout << v[i] << " ";
     }
     cout << endl;
+}
+
+
+template <typename II1, typename II2>
+bool compare (II1 leftB, II1 leftEnd, II2 rightB, II2 rightEnd) {
+
+    while(leftB != leftEnd){
+        if(*leftB < *rightB)
+            return true;
+        else if(*leftB++ > *rightB++){
+            return false;
+        }
+    }
+    return true;
 }
 // --------------
 // divides_digits
@@ -328,7 +342,78 @@ void printVector(const vector<int>& v){
  */
 template <typename II1, typename II2, typename OI>
 OI divides_digits (II1 b1, II1 e1, II2 b2, II2 e2, OI x) {
-    // <your code>
+
+
+    bool deviding = true;
+    deque<int> answer;
+
+    II1 outNum = b1;
+    II2 inNum = b2;
+    unsigned long  outside = distance(b1, e1);
+    unsigned long  inside = distance(b2, e2);
+
+    // cout << "HEreeeee" << endl;
+    if(outside > inside){
+        *x++ = 0;
+        return x;
+    }
+
+    vector<int> tempR(outside, 0);
+    bool first = true;
+
+    while(deviding){
+        bool canDevide = compare(b1, e1, inNum, inNum + outside);
+        // cout << "Can compare " << canDevide << endl;
+        
+        II1 t1 = outNum;
+        II2 t2 = inNum;
+        if(canDevide){
+            // Devide is pissible
+            int numTimes = 0;
+            // vector<int> top(distance, 0);
+            // vector<int> battom(distance, 0);
+
+            
+            bool comp = compare(t1, outNum + outside, t2, inNum + outside);
+
+            while(comp){
+                if(first){
+                    first = false;
+                    OI z =minus_digits(t2, t2 + outside, t1, t1 + outside, &tempR[0]);
+                }else{
+                    vector<int> tempV(tempR.size());
+                    OI z = minus_digits(tempR.begin(), tempR.end(), t1, t1 + outside, &tempV[0]);
+                    tempR = tempV;
+                }
+                numTimes++;
+                cout << comp << endl;
+                comp = compare(t1, t1 + outside, tempR.begin(), tempR.begin() + outside);
+                printVector(tempR);
+            }
+            *x++ = numTimes;
+
+            cout <<"Number of times" <<numTimes << endl;
+            
+        }else{
+            // Cannot devide need one more digit if any left
+            vector<int> newR;
+            for(int i = 0; i < tempR.size(); ++i){
+                if(tempR[i] != 0)
+                    newR.push_back(tempR[i]);
+            }
+            tempR = newR;
+            t2 += outside;
+
+            if((t2) > e2)
+                canDevide= false;
+            else{
+                tempR.push_back(*(t2));
+            }
+        }
+
+    }
+
+
     return x;}
 
 
